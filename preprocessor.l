@@ -5,10 +5,10 @@
 #define SIZE 50
 
 bool directive = false; // if reading text after directive
-char directory[SIZE]; // file to open
-char command[] = {"cat "};
+char directiveType[SIZE]; // type of directive
+char directiveArg[SIZE]; // argument for preprocessor, proceeds directive (file to open, command to exec, etc.)
+char command[SIZE];
 int status = 0; // system command status
-char tmpCommand[SIZE + sizeof(command)/sizeof(command[0])]; // system command + file name
 
 int linecount = 0; // line count
 
@@ -18,12 +18,20 @@ int linecount = 0; // line count
 
 . {
 	if(directive)
-		strcat(directory, yytext);
+		strcat(directiveArg, yytext);
 	else
 		printf("%s", yytext);
 }
 
-^"#include " { directive = true; }
+^"#include " {
+	directive = true;
+	strcpy(directiveType, "include");
+}
+
+^"#exec " {
+	directive = true;
+	strcpy(directiveType, "exec");
+}
 
 \n {
 
@@ -31,11 +39,13 @@ int linecount = 0; // line count
 
 	if(directive)
 	{
-		// concat command and directory for system call
-		strcat(tmpCommand, command);
-		strcat(tmpCommand, directory);
+		if(strcmp(directiveType, "include") == 0)
+			strcpy(command, "cat ");
 
-		FILE *execCommand = popen(tmpCommand, "r");
+		// concat command and directiveArg for system call
+		strcat(command, directiveArg);
+
+		FILE *execCommand = popen(command, "r");
 		char stdoutStr[SIZE];
 		while (fgets(stdoutStr, sizeof(stdoutStr), execCommand) != NULL) 
       		printf("%s", stdoutStr);
@@ -44,7 +54,7 @@ int linecount = 0; // line count
 
 		// reset condition, variables
 		directive = false;
-		directory[0] = tmpCommand[0] = stdoutStr[0] = '\0';
+		directiveArg[0] = command[0] = stdoutStr[0] = directiveType[0] = '\0';
 
 	}
 	else

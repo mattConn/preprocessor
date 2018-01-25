@@ -1,6 +1,9 @@
-cat: test3-.txt: No such file or directory
 This is line one.
 This is line two.
 Line 3, and
 File test 2
+File test 2
 last line; line 4.
+Now, for an echo:
+Thu Jan 25 03:08:05 EST 2018
+And lastly, a bad include:
