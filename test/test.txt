@@ -1,0 +1,12 @@
+This is line one (the first line).
+This is line two.
+Line 3, and below, an exec of cat:
+#exec cat test2.txt
+Below, an include:
+#include test2.txt
+last line; line 4.
+Now, for an exec to echo date:
+#exec echo `date`
+And lastly, a bad include:
+#include test3-.txt
+This should be the last line.
