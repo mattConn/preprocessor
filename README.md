@@ -14,6 +14,6 @@ Executes listed system command with `popen()` inline, sends to stdout.
 Example: ``#exec echo Page last edited: `date` `` 
 
 ## \#include &lt;directory&gt;
-Like a C include. Directory must not be surrounded by parentheses.  
+Like a C include. Directory must not be surrounded by quotation marks.  
 Sends listed file contents to stdout via `cat` utility, executed with `popen()`.  
 Example: `#include includes/footer.html`
