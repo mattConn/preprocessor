@@ -4,11 +4,11 @@
 #include <stdbool.h>
 #define SIZE 50
 
-bool directive = false;
-char directory[SIZE];
-char command[] = {"cat "}; // system command
+bool directive = false; // if reading text after directive
+char directory[SIZE]; // file to open
+char command[] = {"cat "};
 int status = 0; // system command status
-char tmp[SIZE + sizeof(command)/sizeof(command[0])];
+char tmpCommand[SIZE + sizeof(command)/sizeof(command[0])]; // system command + file name
 
 int linecount = 0; // line count
 
@@ -32,14 +32,20 @@ int linecount = 0; // line count
 	if(directive)
 	{
 		// concat command and directory for system call
-		strcat(tmp, command);
-		strcat(tmp, directory);
+		strcat(tmpCommand, command);
+		strcat(tmpCommand, directory);
 
-		system(tmp);
+		FILE *execCommand = popen(tmpCommand, "r");
+		char stdoutStr[SIZE];
+		while (fgets(stdoutStr, sizeof(stdoutStr), execCommand) != NULL) 
+      		printf("%s", stdoutStr);
+
+		pclose(execCommand);
 
 		// reset condition, variables
 		directive = false;
-		directory[0] = tmp[0] = '\0';
+		directory[0] = tmpCommand[0] = stdoutStr[0] = '\0';
+
 	}
 	else
 		printf("%s", yytext);
@@ -55,4 +61,6 @@ int main(int argc, char *argv[])
     yyset_in(file);
     yylex();
     fclose(file);
+
+	return 0;
 }
