@@ -6,7 +6,7 @@
 
 bool directive = false; // if reading text after directive
 char directiveType[SIZE]; // type of directive
-char directiveArg[SIZE]; // argument for preprocessor, proceeds directive (file to open, command to exec, etc.)
+char directiveArg[SIZE]; // argument for preprocessor, comes after directive (file to open, command to exec, etc.)
 char command[SIZE];
 int status = 0; // system command status
 
@@ -39,14 +39,14 @@ int linecount = 0; // line count
 
 	if(directive)
 	{
-		if(strcmp(directiveType, "include") == 0)
+		if(strcmp(directiveType, "include") == 0) // C includes
 			strcpy(command, "cat ");
 
 		// concat command and directiveArg for system call
 		strcat(command, directiveArg);
 
 		FILE *execCommand = popen(command, "r");
-		char stdoutStr[SIZE];
+		char stdoutStr[SIZE]; // for storing and printing execCommand stdout
 		while (fgets(stdoutStr, sizeof(stdoutStr), execCommand) != NULL) 
       		printf("%s", stdoutStr);
 
