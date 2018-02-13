@@ -2,7 +2,7 @@
 Pre-processor to be used in build tasks. I use it mostly for static site generation.
 
 # Building
-Requires flex scanner generator. `make` will build the preprocessor by first generating a scanner (lexer) with flex from `preprocessor.l`, then by compiling the generated `lex.yy.c` with a C compiler (currently clang, can be changed in makefile).
+Requires flex scanner generator. `make` will build the preprocessor by first generating a scanner (lexer) with flex from `preprocessor.c`, then by compiling the generated `lex.yy.c` with a C compiler (currently clang, can be changed in makefile).
 
 # Usage
 `./preprocessor <file>` will send processed file contents to stdout.

@@ -1,6 +1,6 @@
 COMPILER = clang-3.9
 
-preprocessor: preprocessor.l
+preprocessor: preprocessor.c
 	flex $^; $(COMPILER) lex.yy.c -o $@; rm lex.yy.c
 
 check:
